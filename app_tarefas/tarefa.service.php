@@ -45,4 +45,27 @@ class TarefaService{
         $stmt->bindValue(':id', $this->tarefa->__get('id'));
         $stmt->execute();
     }
+    public function marcarRealizada(){
+        $query = "UPDATE tb_tarefas SET id_status = :id_status where id = :id";
+        $stmt = $this->conexao->prepare($query);
+        $stmt->bindValue(':id_status', $this->tarefa->__get('id_status'));
+        $stmt->bindValue(':id', $this->tarefa->__get('id'));
+        return $stmt->execute();
+    }
+    public function recuperarTarefasPendentes(){
+          $query = ' 
+            SELECT
+              t.id, s.status, t.tarefa, t.descricao, t.valor
+            FROM
+              tb_tarefas  as t
+              left join tb_status as s on (t.id_status = s.id)
+            WHERE
+                t.id_status = :id_status
+          
+          ';
+      $stmt = $this->conexao->prepare($query);
+      $stmt->bindValue(':id_status', $this->tarefa->__get('id_status'));
+      $stmt->execute();
+      return $stmt->fetchAll(PDO::FETCH_OBJ); //FETCH_ASSOC
+    }
 }
