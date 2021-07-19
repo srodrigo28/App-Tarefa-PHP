@@ -1,6 +1,6 @@
 <?php
 
-class Tarfefa{
+class Tarefa{
     private $id;
     private $id_stauts;
     private $tarefa;
